@@ -3,59 +3,65 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>مفاصاحساب‌کن | حساب دقیق و شیک</title>
+  <title>محاسبه مفاصاحساب ساده</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;600;800&display=swap" rel="stylesheet">
   <style>
     :root{
-      --bg: 246 247 249;
-      --ink: 20 24 35;
-      --muted: 105 112 125;
+      --bg-dark: 13 16 24;
+      --ink-light: 241 245 249;
+      --muted: 148 163 184;
       --brand1: 99 102 241;
       --brand2: 139 92 246;
-      --ok: 16 185 129;
-      --danger: 239 68 68;
       --radius: 20px;
     }
     *{box-sizing:border-box}
     html,body{height:100%}
     body{
-      margin:0; font-family:"Vazirmatn", system-ui; color:rgb(var(--ink));
-      background:radial-gradient(1200px 600px at 85% -10%, rgba(99,102,241,.18), transparent 60%),
-                 radial-gradient(1000px 500px at -10% 90%, rgba(139,92,246,.16), transparent 60%),
-                 rgb(var(--bg));
+      margin:0; font-family:"Vazirmatn", system-ui; color:rgb(var(--ink-light));
+      background:radial-gradient(1000px 500px at 100% -10%, rgba(99,102,241,.22), transparent 60%),
+                 radial-gradient(900px 600px at -20% 100%, rgba(139,92,246,.2), transparent 60%),
+                 rgb(var(--bg-dark));
       display:grid; place-items:center; padding:24px;
     }
-    .app{width:min(900px,96vw); background:rgba(255,255,255,.9); border-radius:var(--radius); box-shadow:0 10px 30px rgba(0,0,0,.1); overflow:hidden}
+    .app{width:min(900px,96vw); background:rgba(15,23,42,.7); border-radius:var(--radius); box-shadow:0 10px 30px rgba(0,0,0,.4); overflow:hidden; backdrop-filter: blur(12px);}
     .header{padding:24px}
-    .header h1{margin:0; font-size:28px; font-weight:800; color:rgb(var(--brand1))}
+    .header h1{margin:0; font-size:28px; font-weight:800; color:rgb(var(--ink-light))}
 
     .grid{display:grid; grid-template-columns:1fr 1fr; gap:20px; padding:0 24px 24px}
     @media(max-width:800px){.grid{grid-template-columns:1fr}}
 
-    .card{background:#fff; border-radius:16px; padding:18px; box-shadow:0 2px 8px rgba(0,0,0,.08)}
+    .card{background:rgba(255,255,255,.05); border-radius:16px; padding:18px; box-shadow:0 2px 8px rgba(0,0,0,.2)}
     .label{font-size:13px; color:rgb(var(--muted)); margin-bottom:6px}
 
     .seg{display:flex; gap:10px}
-    .chip{padding:10px 16px; border-radius:999px; border:1px solid rgba(0,0,0,.1); background:#f9f9fb; font-weight:600; cursor:pointer; transition:.2s;}
-    .chip:hover{background:#eef;}
+    .chip{padding:10px 16px; border-radius:999px; border:1px solid rgba(255,255,255,.2); background:rgba(255,255,255,.08); font-weight:600; cursor:pointer; transition:.2s; color:rgb(var(--ink-light))}
+    .chip:hover{background:rgba(255,255,255,.18)}
     .chip.selected{background:linear-gradient(135deg, rgb(var(--brand1)), rgb(var(--brand2))); color:#fff; border:none}
 
-    input{width:100%; padding:12px 14px; border-radius:12px; border:1px solid rgba(0,0,0,.15); font-size:15px; text-align:left; direction:ltr}
+    input{width:100%; padding:12px 14px; border-radius:12px; border:1px solid rgba(255,255,255,.2); background:rgba(255,255,255,.08); font-size:15px; text-align:left; direction:ltr; color:#fff}
 
     .actions{display:flex; gap:12px; margin-top:14px}
     button{flex:1; border:none; border-radius:12px; padding:12px; font-weight:700; font-family:"Vazirmatn"; cursor:pointer; transition:.2s}
     .btn-primary{background:linear-gradient(135deg,rgb(var(--brand1)),rgb(var(--brand2))); color:#fff}
-    .btn-primary:hover{filter:brightness(1.08)}
-    .btn-ghost{background:#f3f4f6; color:rgb(var(--brand1))}
+    .btn-primary:hover{filter:brightness(1.1)}
+    .btn-ghost{background:rgba(255,255,255,.1); color:#fff}
 
     .result{display:grid; gap:12px}
-    .row{display:flex; justify-content:space-between; padding:10px 14px; background:#fafafa; border-radius:12px; font-weight:600}
+    .row{display:flex; justify-content:space-between; padding:10px 14px; background:rgba(255,255,255,.06); border-radius:12px; font-weight:600}
     .paycard{padding:20px; border-radius:16px; background:linear-gradient(135deg, rgb(var(--brand1)), rgb(var(--brand2))); color:#fff; box-shadow:0 10px 30px rgba(99,102,241,.4)}
     .pay-top{display:flex; justify-content:space-between; margin-bottom:8px; font-size:14px}
     .pay-amt{font-size:28px; font-weight:800}
     .copy-mini{background:#fff; color:rgb(var(--brand1)); border:none; border-radius:8px; padding:6px 10px; font-weight:700; cursor:pointer}
+
+    .footer{padding:12px 20px; font-size:12px; color:rgb(var(--muted)); display:flex; justify-content:flex-end}
+    .switch{display:flex; gap:6px; align-items:center; cursor:pointer}
+    .switch input{display:none}
+    .pill{width:40px; height:20px; background:#555; border-radius:999px; position:relative}
+    .pill::after{content:""; position:absolute; top:2px; right:2px; width:16px; height:16px; border-radius:50%; background:#fff; transition:.2s}
+    .switch input:checked + .pill{background:#0c8}
+    .switch input:checked + .pill::after{transform:translateX(-20px)}
   </style>
 </head>
 <body>
@@ -89,26 +95,38 @@
         <div class="row"><div>مبنای محاسبه</div><div id="baseEcho">—</div></div>
       </div>
     </section>
+    <footer class="footer">
+      <label class="switch">
+        <input type="checkbox" id="faDigits" checked>
+        <span class="pill"></span>
+        <span>نمایش ارقام فارسی</span>
+      </label>
+    </footer>
   </main>
   <script>
     const $ = s=>document.querySelector(s);
 
     function normalizeNumber(str){
       if(!str) return 0;
-      return parseFloat(String(str).replace(/,/g,'').replace(/[^0-9.]/g,''))||0;
+      str = String(str).replace(/[۰-۹]/g,d=>String('۰۱۲۳۴۵۶۷۸۹'.indexOf(d)));
+      return parseFloat(str.replace(/,/g,'').replace(/[^0-9.]/g,''))||0;
     }
-    function formatMoney(val){return new Intl.NumberFormat('fa-IR').format(Math.round(val));}
+    function formatMoney(val, fa=true){
+      const fmt = new Intl.NumberFormat(fa? 'fa-IR':'en-US');
+      return fmt.format(Math.round(val));
+    }
 
     function selectedPercent(){const sel=document.querySelector('.chip.selected');return sel?parseFloat(sel.dataset.percent):7.8;}
 
     function compute(){
+      const fa=$('#faDigits').checked;
       const base=normalizeNumber($('#base').value);
       const percent=selectedPercent();
       const deduct=base*(percent/100);
       const payable=base-deduct;
-      $('#deduct').textContent=base?formatMoney(deduct)+" تومان":"—";
-      $('#payable').textContent=base?formatMoney(payable)+" تومان":"—";
-      $('#baseEcho').textContent=base?formatMoney(base)+" تومان":"—";
+      $('#deduct').textContent=base?formatMoney(deduct,fa)+" تومان":"—";
+      $('#payable').textContent=base?formatMoney(payable,fa)+" تومان":"—";
+      $('#baseEcho').textContent=base?formatMoney(base,fa)+" تومان":"—";
     }
 
     document.querySelectorAll('.chip').forEach(ch=>{
@@ -125,6 +143,7 @@
       const txt=$('#payable').textContent;
       try{await navigator.clipboard.writeText(txt);$('#copyPayable').textContent='کپی شد!';setTimeout(()=>$('#copyPayable').textContent='کپی',1500);}catch{}
     });
+    $('#faDigits').addEventListener('change',()=>compute());
   </script>
 </body>
 </html>
