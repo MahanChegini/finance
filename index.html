@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>مفاصاحساب‌کن | حساب دقیق و شیک</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg: 246 247 249;            /* #f6f7f9 */
+      --ink: 20 24 35;              /* near-black */
+      --muted: 105 112 125;         /* gray */
+      --brand1: 99 102 241;         /* indigo-500 */
+      --brand2: 139 92 246;         /* violet-500 */
+      --ok: 16 185 129;             /* emerald */
+      --warn: 245 158 11;           /* amber */
+      --danger: 239 68 68;          /* red */
+      --glass: 255 255 255 / .6;    /* glass */
+      --shadow: 0 10px 30px rgb(15 23 42 / .12);
+      --radius: 20px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0; font-family:"Vazirmatn", system-ui, -apple-system, Segoe UI, Roboto, Arial; color:rgb(var(--ink));
+      background:
+        radial-gradient(1200px 600px at 85% -10%, rgba(99,102,241,.18), transparent 60%),
+        radial-gradient(1000px 500px at -10% 90%, rgba(139,92,246,.16), transparent 60%),
+        rgb(var(--bg));
+      display:grid; place-items:center; padding:24px;
+    }
+    .app{
+      width:min(920px, 96vw); backdrop-filter:saturate(140%) blur(16px);
+      background:linear-gradient(180deg, rgba(255,255,255,.86), rgba(255,255,255,.66));
+      border:1px solid rgba(99,102,241,.08); border-radius:var(--radius); box-shadow:var(--shadow);
+      overflow:hidden;
+    }
+    .header{
+      padding:28px 28px 10px; position:relative; isolation:isolate;
+    }
+    .header h1{margin:0; font-size:28px; letter-spacing:-.2px}
+    .header p{margin:8px 0 0; color:rgb(var(--muted)); font-size:14px}
+
+    .grid{display:grid; grid-template-columns:1.1fr 1fr; gap:18px; padding:18px 24px 24px}
+    @media (max-width: 860px){ .grid{grid-template-columns:1fr} }
+
+    .card{background:rgba(255,255,255,.72); border:1px solid rgba(15,23,42,.06); border-radius:16px; box-shadow: var(--shadow);
+      padding:18px}
+
+    .field{display:flex; flex-direction:column; gap:8px; margin:12px 0}
+    .label{font-size:13px; color:rgb(var(--muted))}
+
+    .input{
+      display:flex; align-items:center; gap:10px; border:1px solid rgba(15,23,42,.08); background:white; border-radius:14px;
+      padding:12px 14px; transition:border .2s, box-shadow .2s; box-shadow:inset 0 1px 0 rgba(255,255,255,.6);
+    }
+    .input:focus-within{border-color:rgb(var(--brand1)); box-shadow:0 0 0 4px rgba(99,102,241,.12)}
+    .input input{all:unset; direction:ltr; flex:1; font-feature-settings:"tnum" 1; font-variant-numeric:tabular-nums;}
+    .unit{color:rgb(var(--muted)); font-size:13px}
+
+    .actions{display:flex; gap:10px; flex-wrap:wrap; margin-top:12px}
+    button{
+      appearance:none; border:0; border-radius:14px; padding:12px 14px; cursor:pointer; font-weight:600;
+      transition:transform .05s ease, box-shadow .2s ease, background .2s ease;
+    }
+    .btn-primary{background:linear-gradient(135deg, rgb(var(--brand1)), rgb(var(--brand2))); color:white; box-shadow:0 8px 20px rgba(99,102,241,.35)}
+    .btn-primary:hover{filter:brightness(1.03)}
+    .btn-primary:active{transform:translateY(1px)}
+    .btn-ghost{background:white; color:rgb(var(--brand1)); border:1px solid rgba(99,102,241,.25)}
+    .btn-ghost:hover{background:rgba(99,102,241,.05)}
+
+    .result{
+      display:grid; gap:10px; align-content:start;
+    }
+    .row{display:flex; align-items:center; justify-content:space-between; gap:10px; padding:12px 14px; background:white; border:1px dashed rgba(15,23,42,.08); border-radius:14px}
+    .row .k{color:rgb(var(--muted)); font-size:13px}
+    .row .v{font-weight:700; font-size:18px}
+
+    .badge{display:inline-flex; align-items:center; gap:8px; font-size:12px; color:white; background:linear-gradient(135deg, rgba(16,185,129,.95), rgba(99,102,241,.95)); padding:6px 10px; border-radius:999px}
+
+    .footer{padding:10px 24px 24px; display:flex; justify-content:space-between; gap:10px; align-items:center; color:rgb(var(--muted)); font-size:12px}
+    .switch{display:flex; align-items:center; gap:8px; cursor:pointer; user-select:none}
+    .switch input{display:none}
+    .pill{width:48px; height:26px; background:#e9e9ee; border-radius:999px; position:relative; transition:background .2s}
+    .pill::after{content:""; position:absolute; width:20px; height:20px; top:3px; right:3px; border-radius:50%; background:white; box-shadow:0 2px 6px rgba(0,0,0,.15); transition:transform .2s}
+    .switch input:checked + .pill{background:rgba(16,185,129,.4)}
+    .switch input:checked + .pill::after{transform:translateX(-22px)}
+
+    @media (prefers-color-scheme: dark){
+      :root{ --bg: 13 16 24; --ink: 241 245 249; --muted: 148 163 184 }
+      body{background:
+        radial-gradient(1000px 500px at 100% -10%, rgba(99,102,241,.22), transparent 60%),
+        radial-gradient(900px 600px at -20% 100%, rgba(139,92,246,.2), transparent 60%),
+        rgb(var(--bg));}
+      .app{background:linear-gradient(180deg, rgba(15,23,42,.66), rgba(15,23,42,.5)); border-color:rgba(99,102,241,.15)}
+      .card{background:rgba(15,23,42,.6); border-color:rgba(255,255,255,.07)}
+      .input{background:rgba(0,0,0,.3); border-color:rgba(255,255,255,.08)}
+      .row{background:rgba(0,0,0,.2); border-color:rgba(255,255,255,.09)}
+      .btn-ghost{background:transparent; color:white; border-color:rgba(148,163,184,.35)}
+    }
+  </style>
+</head>
+<body>
+  <main class="app" id="app">
+    <section class="header">
+      <div class="badge" aria-label="ready-to-use">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20 7L9 18l-5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        مفاصاحساب‌کن – شیک و دقیق
+      </div>
+      <h1>محاسبه مفاصا فقط با دو ورودی ✨</h1>
+      <p>درصد مفاصا و مبلغ مبنا (قبل از تخفیف) را وارد کنید؛ مقدار کسر و مبلغ پرداختی به‌صورت زنده محاسبه می‌شود.</p>
+    </section>
+
+    <section class="grid">
+      <!-- Inputs -->
+      <div class="card">
+        <div class="field">
+          <div class="label">درصد مفاصا</div>
+          <div class="input">
+            <input id="percent" inputmode="decimal" placeholder="مثلاً 7.8" value="7.8" aria-label="درصد مفاصا" />
+            <span class="unit">٪</span>
+          </div>
+        </div>
+        <div class="field">
+          <div class="label">مبلغ مبنا (قبل از تخفیف)</div>
+          <div class="input">
+            <input id="base" inputmode="numeric" placeholder="مثلاً 173,860,000" aria-label="مبلغ مبنا" />
+            <span class="unit">تومان</span>
+          </div>
+        </div>
+        <div class="actions">
+          <button class="btn-primary" id="calcBtn">محاسبه</button>
+          <button class="btn-ghost" id="resetBtn">ریست</button>
+          <button class="btn-ghost" id="copyBtn">کپی نتایج</button>
+        </div>
+      </div>
+
+      <!-- Results -->
+      <div class="card result" aria-live="polite" aria-atomic="true">
+        <div class="row">
+          <div class="k">مبلغ کسر مفاصا</div>
+          <div class="v" id="deduct">—</div>
+        </div>
+        <div class="row">
+          <div class="k">مبلغ قابل پرداخت</div>
+          <div class="v" id="payable">—</div>
+        </div>
+        <div class="row">
+          <div class="k">مبنای محاسبه (ورودی)</div>
+          <div class="v" id="baseEcho">—</div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <label class="switch" title="نمایش ارقام فارسی/انگلیسی">
+        <input type="checkbox" id="faDigits" checked>
+        <span class="pill"></span>
+        <span>نمایش ارقام فارسی</span>
+      </label>
+      <div>ساخته‌شده با ❤️ برای محاسبه سریع مفاصاحساب</div>
+    </footer>
+  </main>
+
+  <script>
+    // ---------- Utilities ----------
+    const $ = (q) => document.querySelector(q);
+
+    const persianDigitMap = {
+      '۰': '0','۱': '1','۲': '2','۳': '3','۴': '4','۵': '5','۶': '6','۷': '7','۸': '8','۹': '9',
+      '٬': ',', // Arabic thousands separator
+    };
+
+    function normalizeNumber(str){
+      if (!str) return 0;
+      str = String(str).trim();
+      // Convert Persian/Arabic digits to Latin
+      str = str.replace(/[۰-۹٬]/g, ch => persianDigitMap[ch] ?? ch);
+      // Keep digits and decimal point only, remove commas
+      str = str.replace(/,/g, '').replace(/[^0-9.]/g, '');
+      const val = parseFloat(str);
+      return isFinite(val) ? val : 0;
+    }
+
+    function formatMoney(value, fa=true){
+      try{
+        const fmt = new Intl.NumberFormat(fa ? 'fa-IR' : 'en-US');
+        return fmt.format(Math.round(value));
+      }catch(e){ return String(Math.round(value)); }
+    }
+
+    function formatPercent(value, fa=true){
+      const fmt = new Intl.NumberFormat(fa ? 'fa-IR' : 'en-US', { maximumFractionDigits: 4 });
+      return fmt.format(value);
+    }
+
+    // ---------- Core Logic ----------
+    function compute(){
+      const fa = $('#faDigits').checked;
+      const percent = normalizeNumber($('#percent').value);
+      const base = normalizeNumber($('#base').value);
+      const deduct = base * (percent / 100);
+      const payable = base - deduct;
+
+      $('#deduct').textContent = base ? `${formatMoney(deduct, fa)} تومان` : '—';
+      $('#payable').textContent = base ? `${formatMoney(payable, fa)} تومان` : '—';
+      $('#baseEcho').textContent = base ? `${formatMoney(base, fa)} تومان` : '—';
+
+      // Visual hint if result is negative (shouldn't happen here but just in case)
+      const rowPayable = $('#payable').closest('.row');
+      rowPayable.style.borderColor = payable < 0 ? `rgb(var(--danger))` : 'rgba(15,23,42,.08)';
+    }
+
+    // ---------- Events ----------
+    ['#percent','#base'].forEach(sel => {
+      $(sel).addEventListener('input', compute);
+      $(sel).addEventListener('change', compute);
+    });
+
+    $('#calcBtn').addEventListener('click', (e)=>{ e.preventDefault(); compute(); });
+    $('#resetBtn').addEventListener('click', (e)=>{
+      e.preventDefault();
+      $('#percent').value = '';
+      $('#base').value = '';
+      ['#deduct','#payable','#baseEcho'].forEach(sel => $(sel).textContent = '—');
+    });
+
+    $('#copyBtn').addEventListener('click', async (e)=>{
+      e.preventDefault();
+      const txt = `\nنتایج محاسبه مفاصا\n————————————\nدرصد مفاصا: ${formatPercent(normalizeNumber($('#percent').value), $('#faDigits').checked)}٪\nمبلغ مبنا: ${formatMoney(normalizeNumber($('#base').value), $('#faDigits').checked)} تومان\nمبلغ کسر: ${$('#deduct').textContent}\nمبلغ قابل پرداخت: ${$('#payable').textContent}\n`;
+      try{ await navigator.clipboard.writeText(txt); e.target.textContent = 'کپی شد!'; setTimeout(()=> e.target.textContent = 'کپی نتایج', 1500);}catch(err){ alert('کپی در کلیپ‌بورد انجام نشد.'); }
+    });
+
+    $('#faDigits').addEventListener('change', compute);
+
+    // Prefill sample and compute once
+    window.addEventListener('DOMContentLoaded', ()=>{
+      $('#percent').value ||= '7.8';
+      $('#base').value ||= '173,860,000';
+      compute();
+    });
+  </script>
+</body>
+</html>
