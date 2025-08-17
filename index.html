@@ -37,17 +37,14 @@
       border:1px solid rgba(99,102,241,.08); border-radius:var(--radius); box-shadow:var(--shadow);
       overflow:hidden;
     }
-    .header{
-      padding:28px 28px 10px; position:relative; isolation:isolate;
-    }
+    .header{ padding:28px 28px 10px; position:relative; isolation:isolate; }
     .header h1{margin:0; font-size:28px; letter-spacing:-.2px}
     .header p{margin:8px 0 0; color:rgb(var(--muted)); font-size:14px}
 
     .grid{display:grid; grid-template-columns:1.1fr 1fr; gap:18px; padding:18px 24px 24px}
     @media (max-width: 860px){ .grid{grid-template-columns:1fr} }
 
-    .card{background:rgba(255,255,255,.72); border:1px solid rgba(15,23,42,.06); border-radius:16px; box-shadow: var(--shadow);
-      padding:18px}
+    .card{background:rgba(255,255,255,.72); border:1px solid rgba(15,23,42,.06); border-radius:16px; box-shadow: var(--shadow); padding:18px}
 
     .field{display:flex; flex-direction:column; gap:8px; margin:12px 0}
     .label{font-size:13px; color:rgb(var(--muted))}
@@ -59,6 +56,13 @@
     .input:focus-within{border-color:rgb(var(--brand1)); box-shadow:0 0 0 4px rgba(99,102,241,.12)}
     .input input{all:unset; direction:ltr; flex:1; font-feature-settings:"tnum" 1; font-variant-numeric:tabular-nums;}
     .unit{color:rgb(var(--muted)); font-size:13px}
+    .input select {
+      all: unset;
+      direction: ltr;
+      font-size: 14px;
+      color: inherit;
+      cursor: pointer;
+    }
 
     .actions{display:flex; gap:10px; flex-wrap:wrap; margin-top:12px}
     button{
@@ -71,9 +75,7 @@
     .btn-ghost{background:white; color:rgb(var(--brand1)); border:1px solid rgba(99,102,241,.25)}
     .btn-ghost:hover{background:rgba(99,102,241,.05)}
 
-    .result{
-      display:grid; gap:10px; align-content:start;
-    }
+    .result{display:grid; gap:10px; align-content:start;}
     .row{display:flex; align-items:center; justify-content:space-between; gap:10px; padding:12px 14px; background:white; border:1px dashed rgba(15,23,42,.08); border-radius:14px}
     .row .k{color:rgb(var(--muted)); font-size:13px}
     .row .v{font-weight:700; font-size:18px}
@@ -105,8 +107,8 @@
 <body>
   <main class="app" id="app">
     <section class="header">
-      <div class="badge" aria-label="ready-to-use">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20 7L9 18l-5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <div class="badge">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M20 7L9 18l-5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
         محاسبه آسان سپرده بیمه
       </div>
       <h1>محاسبه سپرده بیمه ✨</h1>
@@ -119,15 +121,20 @@
         <div class="field">
           <div class="label">درصد مفاصا</div>
           <div class="input">
-            <input id="percent" inputmode="decimal" placeholder="مثلاً 7.8" value="7.8" aria-label="درصد مفاصا" />
-            <span class="unit">٪</span>
+            <select id="percent">
+              <option value="7.8" selected>7.8٪</option>
+              <option value="16.67">16.67٪</option>
+            </select>
           </div>
         </div>
         <div class="field">
           <div class="label">مبلغ مبنا (بعد از تخفیف و قبل از ارزش افزوده)</div>
           <div class="input">
-            <input id="base" inputmode="numeric" placeholder="مثلاً 173,860,000" aria-label="مبلغ مبنا" />
-            <span class="unit">ریال</span>
+            <input id="base" inputmode="numeric" placeholder="مثلاً 173,860,000" />
+            <select id="unit">
+              <option value="ریال" selected>ریال</option>
+              <option value="تومان">تومان</option>
+            </select>
           </div>
         </div>
         <div class="actions">
@@ -139,39 +146,26 @@
 
       <!-- Results -->
       <div class="card result" aria-live="polite" aria-atomic="true">
-        <div class="row">
-          <div class="k">مبلغ سپرده بیمه (نیاز به کسر)</div>
-          <div class="v" id="deduct">—</div>
-        </div>
-        <div class="row">
-          <div class="k">مبلغ مالیات (10%)</div>
-          <div class="v" id="tax">—</div>
-        </div>
-        <div class="row">
-          <div class="k">مبلغ قابل پرداخت</div>
-          <div class="v" id="payable">—</div>
-        </div>
+        <div class="row"><div class="k">مبلغ سپرده بیمه (نیاز به کسر)</div><div class="v" id="deduct">—</div></div>
+        <div class="row"><div class="k">مبلغ مالیات (10%)</div><div class="v" id="tax">—</div></div>
+        <div class="row"><div class="k">مبلغ قابل پرداخت</div><div class="v" id="payable">—</div></div>
       </div>
     </section>
 
     <footer class="footer">
-      <label class="switch" title="نمایش ارقام فارسی/انگلیسی">
+      <label class="switch">
         <input type="checkbox" id="faDigits" checked>
         <span class="pill"></span>
         <span>نمایش ارقام فارسی</span>
       </label>
-      <div>ساخته‌شده برای محاسبه آسان سپرده بیمه (با همراهی کارشناس ارشد مالی)
+      <div>ساخته‌شده برای محاسبه آسان سپرده بیمه (با همراهی کارشناس ارشد مالی)</div>
     </footer>
   </main>
 
   <script>
-    // ---------- Utilities ----------
     const $ = (q) => document.querySelector(q);
 
-    const persianDigitMap = {
-      '۰': '0','۱': '1','۲': '2','۳': '3','۴': '4','۵': '5','۶': '6','۷': '7','۸': '8','۹': '9',
-      '٬': ',',
-    };
+    const persianDigitMap = {'۰':'0','۱':'1','۲':'2','۳':'3','۴':'4','۵':'5','۶':'6','۷':'7','۸':'8','۹':'9','٬':','};
 
     function normalizeNumber(str){
       if (!str) return 0;
@@ -183,58 +177,44 @@
     }
 
     function formatMoney(value, fa=true){
-      try{
-        const fmt = new Intl.NumberFormat(fa ? 'fa-IR' : 'en-US');
-        return fmt.format(Math.round(value));
-      }catch(e){ return String(Math.round(value)); }
+      try{ return new Intl.NumberFormat(fa?'fa-IR':'en-US').format(Math.round(value)); }
+      catch(e){ return String(Math.round(value)); }
     }
 
     function formatPercent(value, fa=true){
-      const fmt = new Intl.NumberFormat(fa ? 'fa-IR' : 'en-US', { maximumFractionDigits: 4 });
-      return fmt.format(value);
+      return new Intl.NumberFormat(fa?'fa-IR':'en-US', { maximumFractionDigits: 4 }).format(value);
     }
 
-    // ---------- Core Logic ----------
     function compute(){
       const fa = $('#faDigits').checked;
-      const percent = normalizeNumber($('#percent').value);
-      const base = normalizeNumber($('#base').value);
+      const percent = parseFloat($('#percent').value);
+      let base = normalizeNumber($('#base').value);
+      const unit = $('#unit').value;
 
-      const tax = base * 0.10; // مالیات 10%
-      const deduct = base * (percent / 100); // کسری مفاصا
-      const payable = (base - deduct) + tax; // مبلغ قابل پرداخت بعد از کم کردن مفاصا و اضافه کردن مالیات
+      if(unit === "تومان"){ base = base * 10; }
+
+      const tax = base * 0.10;
+      const deduct = base * (percent / 100);
+      const payable = (base - deduct) + tax;
 
       $('#deduct').textContent = base ? `${formatMoney(deduct, fa)} ریال` : '—';
       $('#tax').textContent = base ? `${formatMoney(tax, fa)} ریال` : '—';
       $('#payable').textContent = base ? `${formatMoney(payable, fa)} ریال` : '—';
-      $('#baseEcho').textContent = base ? `${formatMoney(base, fa)} ریال` : '—';
-
-      const rowPayable = $('#payable').closest('.row');
-      rowPayable.style.borderColor = payable < 0 ? `rgb(var(--danger))` : 'rgba(15,23,42,.08)';
     }
 
-    // ---------- Events ----------
-    ['#percent','#base'].forEach(sel => {
+    ['#percent','#base','#unit'].forEach(sel=>{
       $(sel).addEventListener('input', compute);
       $(sel).addEventListener('change', compute);
     });
 
-    $('#calcBtn').addEventListener('click', (e)=>{ e.preventDefault(); compute(); });
-    $('#resetBtn').addEventListener('click', (e)=>{
+    $('#calcBtn').addEventListener('click', e=>{ e.preventDefault(); compute(); });
+    $('#resetBtn').addEventListener('click', e=>{
       e.preventDefault();
-      $('#percent').value = '';
+      $('#percent').value = '7.8';
       $('#base').value = '';
-      ['#deduct','#tax','#payable','#baseEcho'].forEach(sel => $(sel).textContent = '—');
+      $('#unit').value = 'ریال';
+      ['#deduct','#tax','#payable'].forEach(sel => $(sel).textContent = '—');
     });
-
-    $('#copyBtn').addEventListener('click', async (e)=>{
-      e.preventDefault();
-      const txt = `\nنتایج محاسبه مفاصا\n————————————\nدرصد مفاصا: ${formatPercent(normalizeNumber($('#percent').value), $('#faDigits').checked)}٪\nمبلغ مبنا: ${formatMoney(normalizeNumber($('#base').value), $('#faDigits').checked)} تومان\nمبلغ کسر مفاصا: ${$('#deduct').textContent}\nمبلغ مالیات: ${$('#tax').textContent}\nمبلغ قابل پرداخت: ${$('#payable').textContent}\n`;
-      try{ await navigator.clipboard.writeText(txt); e.target.textContent = 'کپی شد!'; setTimeout(()=> e.target.textContent = 'کپی نتایج', 1500);}catch(err){ alert('کپی در کلیپ‌بورد انجام نشد.'); }
-    });
-
-    $('#faDigits').addEventListener('change', compute);
-
   </script>
 </body>
 </html>
