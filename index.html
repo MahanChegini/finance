@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>محاسبه آسان مفاصاحساب</title>
+  <title>محاسبه آسان سپرده بیمه</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -107,10 +107,10 @@
     <section class="header">
       <div class="badge" aria-label="ready-to-use">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20 7L9 18l-5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        محاسبه آسان مفاصاحساب
+        محاسبه آسان سپرده بیمه
       </div>
-      <h1>محاسبه سریع مفاصا ✨</h1>
-      <p>درصد مفاصا و مبلغ مبنا (بعد از تخفیف و قبل از ارزش افزوده) را وارد کنید؛ مقدار کسر و مبلغ پرداختی به‌صورت زنده محاسبه می‌شود.</p>
+      <h1>محاسبه سپرده بیمه ✨</h1>
+      <p>درصد موردنظر و مبلغ مبنا (بعد از تخفیف و قبل از ارزش افزوده) را وارد کنید؛ مقدار کسر و مبلغ پرداختی به‌صورت زنده محاسبه می‌شود.</p>
     </section>
 
     <section class="grid">
@@ -124,7 +124,7 @@
           </div>
         </div>
         <div class="field">
-          <div class="label">مبلغ مبنا (بعد از تخفیف)</div>
+          <div class="label">مبلغ مبنا (بعد از تخفیف و قبل از ارزش افزوده)</div>
           <div class="input">
             <input id="base" inputmode="numeric" placeholder="مثلاً 173,860,000" aria-label="مبلغ مبنا" />
             <span class="unit">تومان</span>
@@ -140,7 +140,7 @@
       <!-- Results -->
       <div class="card result" aria-live="polite" aria-atomic="true">
         <div class="row">
-          <div class="k">مبلغ کسر مفاصا</div>
+          <div class="k">مبلغ سپرده بیمه (نیاز به کسر)</div>
           <div class="v" id="deduct">—</div>
         </div>
         <div class="row">
@@ -160,7 +160,7 @@
         <span class="pill"></span>
         <span>نمایش ارقام فارسی</span>
       </label>
-      <div>ساخته‌شده برای محاسبه آسان مفاصاحساب (با کمک همکار مالی)</div>
+      <div>ساخته‌شده برای محاسبه آسان سپرده بیمه (با همراهی کارشناس ارشد مالی)div>
     </footer>
   </main>
 
@@ -204,10 +204,10 @@
       const deduct = base * (percent / 100); // کسری مفاصا
       const payable = (base - deduct) + tax; // مبلغ قابل پرداخت بعد از کم کردن مفاصا و اضافه کردن مالیات
 
-      $('#deduct').textContent = base ? `${formatMoney(deduct, fa)} تومان` : '—';
-      $('#tax').textContent = base ? `${formatMoney(tax, fa)} تومان` : '—';
-      $('#payable').textContent = base ? `${formatMoney(payable, fa)} تومان` : '—';
-      $('#baseEcho').textContent = base ? `${formatMoney(base, fa)} تومان` : '—';
+      $('#deduct').textContent = base ? `${formatMoney(deduct, fa)} ریال` : '—';
+      $('#tax').textContent = base ? `${formatMoney(tax, fa)} ریال` : '—';
+      $('#payable').textContent = base ? `${formatMoney(payable, fa)} ریال` : '—';
+      $('#baseEcho').textContent = base ? `${formatMoney(base, fa)} ریال` : '—';
 
       const rowPayable = $('#payable').closest('.row');
       rowPayable.style.borderColor = payable < 0 ? `rgb(var(--danger))` : 'rgba(15,23,42,.08)';
