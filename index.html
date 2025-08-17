@@ -120,7 +120,7 @@
           <div class="label">مبلغ مبنا (بعد از تخفیف و قبل از ارزش افزوده)</div>
           <div class="input">
             <input id="base" inputmode="numeric" placeholder="مثلاً 173,860,000" aria-label="مبلغ مبنا" />
-            <span class="unit">ریال</span>
+            <span class="unit" id="baseUnit">ریال</span>
           </div>
         </div>
         <div class="actions">
@@ -186,9 +186,9 @@
       const deduct = base * (percent / 100);
       const payable = (base - deduct) + tax;
 
-      $('#deduct').textContent = base ? `${formatMoney(deduct, fa)} ریال` : '—';
-      $('#tax').textContent = base ? `${formatMoney(tax, fa)} ریال` : '—';
-      $('#payable').textContent = base ? `${formatMoney(payable, fa)} ریال` : '—';
+      $('#deduct').textContent = base ? `${formatMoney(deduct, fa)} ${unitMode}` : '—';
+      $('#tax').textContent = base ? `${formatMoney(tax, fa)} ${unitMode}` : '—';
+      $('#payable').textContent = base ? `${formatMoney(payable, fa)} ${unitMode}` : '—';
     }
 
     // دکمه‌های درصد
@@ -216,6 +216,7 @@
     $('#unitSwitch').addEventListener('change', e=>{
       unitMode = e.target.checked ? "تومان" : "ریال";
       $('#unitLabel').textContent = `مبنای محاسبه: ${unitMode}`;
+      $('#baseUnit').textContent = unitMode;
       compute();
     });
   </script>
